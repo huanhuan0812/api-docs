@@ -16,17 +16,22 @@ interface SidebarItem {
   collapsed?: boolean
 }
 
-// 解析Markdown文件，获取Frontmatter中的title和order
-function parseFrontmatter(filePath: string): { title: string | null; order: number | null } {
+// 解析Markdown文件，获取Frontmatter中的title、order和hide
+function parseFrontmatter(filePath: string): { 
+  title: string | null; 
+  order: number | null;
+  hide: boolean;  // 改为非可空类型，默认false
+} {
   try {
     const content = fs.readFileSync(filePath, 'utf-8')
     const { data } = matter(content)
     return {
       title: data.title || null,
-      order: typeof data.order === 'number' ? data.order : null
+      order: typeof data.order === 'number' ? data.order : null,
+      hide: data.hide === true ? true : false  // 只有明确为true时才返回true，其他情况都返回false
     }
   } catch (error) {
-    return { title: null, order: null }
+    return { title: null, order: null, hide: false }  // 默认false
   }
 }
 
@@ -53,12 +58,20 @@ function buildSidebarTree(dir: string, basePath: string = '', lang: string = 'en
   const indexFile = entries.find(e => !e.isDirectory() && e.name === 'index.md');
   let dirTitle: string | null = null;
   let dirOrder: number | null = null;
+  let dirHide: boolean = false;  // 默认为false
   
   if (indexFile) {
     const indexPath = path.join(dir, indexFile.name);
-    const { title, order } = parseFrontmatter(indexPath);
+    const { title, order, hide } = parseFrontmatter(indexPath);
     dirTitle = title;
     dirOrder = order;
+    dirHide = hide;  // 直接使用返回的boolean值
+  }
+
+  // 如果当前目录被标记为隐藏，则返回空数组
+  if (dirHide) {
+    console.log(`📁 隐藏目录: ${dir}`);
+    return [];
   }
 
   // 处理所有子目录（递归）
@@ -75,22 +88,28 @@ function buildSidebarTree(dir: string, basePath: string = '', lang: string = 'en
       const subDirIndexPath = path.join(subDirPath, 'index.md');
       let subDirTitle = formatFileNameToTitle(subDir.name); // 默认用目录名
       let subDirOrder = 999;
+      let subDirHide = false;  // 默认为false
       
       if (fs.existsSync(subDirIndexPath)) {
-        const { title, order } = parseFrontmatter(subDirIndexPath);
+        const { title, order, hide } = parseFrontmatter(subDirIndexPath);
         if (title) subDirTitle = title;
         if (order !== null) subDirOrder = order;
+        subDirHide = hide;  // 直接使用返回的boolean值
       }
       
-      dirItems.push({
-        path: subDir.name,
-        item: {
-          text: subDirTitle,
-          items: subItems,
-          collapsed: true, // 默认折叠
-          // ❌ 移除link属性，这样点击标题时只展开/折叠，不跳转
-        }
-      });
+      // 如果子目录本身没有被隐藏，才添加到侧边栏
+      if (!subDirHide) {
+        dirItems.push({
+          path: subDir.name,
+          item: {
+            text: subDirTitle,
+            items: subItems,
+            collapsed: true, // 默认折叠
+          }
+        });
+      } else {
+        console.log(`📁 隐藏子目录: ${subDirPath}`);
+      }
     }
   }
 
@@ -104,7 +123,13 @@ function buildSidebarTree(dir: string, basePath: string = '', lang: string = 'en
   for (const file of files) {
     const filePath = path.join(dir, file.name);
     const fileName = file.name.replace(/\.md$/, '');
-    const { title, order } = parseFrontmatter(filePath);
+    const { title, order, hide } = parseFrontmatter(filePath);
+    
+    // 如果文件被标记为隐藏，则跳过
+    if (hide) {  // hide已经是boolean值
+      console.log(`📄 隐藏文件: ${filePath}`);
+      continue;
+    }
     
     const link = `/${lang}/api/${basePath ? basePath + '/' : ''}${fileName}`;
     
@@ -177,10 +202,18 @@ function generateSidebar(lang: string = 'en'): SidebarItem[] {
   // 检查根目录是否有index.md
   const rootIndexPath = path.join(apiDir, 'index.md');
   let rootTitle = lang === 'zh' ? 'API 参考' : 'API Reference';
+  let rootHide = false;  // 默认为false
   
   if (fs.existsSync(rootIndexPath)) {
-    const { title } = parseFrontmatter(rootIndexPath);
+    const { title, hide } = parseFrontmatter(rootIndexPath);
     if (title) rootTitle = title;
+    rootHide = hide;  // 直接使用返回的boolean值
+  }
+
+  // 如果根目录被标记为隐藏，返回空侧边栏
+  if (rootHide) {
+    console.log(`📁 隐藏根目录: ${apiDir}`);
+    return [];
   }
 
   // 构建侧边栏树
@@ -241,5 +274,13 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/huanhuan0812/api-docs' }
     ]
+  },
+
+  markdown: {
+    lineNumbers: true,
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark'
+    }
   }
 })
