@@ -2,9 +2,6 @@
 title: "简介"
 order: 1
 ---
-#### 注意！！
-
-<span style="color: red; font-weight: bold;">由于编码读取问题，此库暂不支持中文读写</span>
 
 ### Qt Csv
 
