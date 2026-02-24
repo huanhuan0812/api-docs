@@ -198,6 +198,7 @@ function generateSidebar(lang: string = 'en'): SidebarItem[] {
 }
 
 export default defineConfig({
+  base: '/api-docs/',
   title: '双语 API 文档',
   
   // 语言配置
