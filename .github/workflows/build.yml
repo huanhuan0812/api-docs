@@ -20,7 +20,7 @@ jobs:
       - name: Deploy to api-docs subdirectory
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.PAT_TOKEN }}
+          personal_token: ${{ secrets.PAT_SECRET }}
           external_repository: huanhuan0812/huanhuan0812.github.io
           publish_branch: main
           publish_dir: ./docs/.vitepress/dist
