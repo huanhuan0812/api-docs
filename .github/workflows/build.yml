@@ -1,0 +1,28 @@
+name: build and deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
+      - name: Build documentation
+        run: npm run docs:build
+
+      - name: Deploy to api-docs subdirectory
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          personal_token: ${{ secrets.PAT_TOKEN }}
+          external_repository: huanhuan0812/huanhuan0812.github.io
+          publish_branch: main
+          publish_dir: ./docs/.vitepress/dist
+          destination_dir: api-docs
+          keep_files: true  # 保留其他目录的文件
