@@ -199,7 +199,7 @@ function generateSidebar(lang: string = 'en'): SidebarItem[] {
 
 export default defineConfig({
   base: '/api-docs/',
-  title: '双语 API 文档',
+  title: 'API 文档',
   
   // 语言配置
   locales: {
@@ -207,7 +207,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       title: 'API Documentation',
-      description: 'Bilingual API Docs with VitePress',
+      description: 'API Documentation',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
@@ -219,7 +219,7 @@ export default defineConfig({
       label: '简体中文',
       lang: 'zh-CN',
       title: 'API 文档',
-      description: '使用 VitePress 构建的双语文档',
+      description: 'API 文档',
       themeConfig: {
         nav: [
           { text: '首页', link: '/zh/' },
@@ -239,7 +239,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/your-repo' }
+      { icon: 'github', link: 'https://github.com/huanhuan0812/api-docs' }
     ]
   }
 })
