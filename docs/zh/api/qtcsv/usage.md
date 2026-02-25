@@ -105,6 +105,7 @@ order: 2
 |------|--------|------|
 | `operator>>(QCsv& csv, QString& value)` | `QCsv&` | 流式读取下一个值 |
 | `resetStream()` | `void` | 重置流读取位置 |
+| `hasNext()` | `bool` | 判断是否到达文件末尾 |
 
 ### 9.信号
 | 信号 | 参数 | 描述 |
