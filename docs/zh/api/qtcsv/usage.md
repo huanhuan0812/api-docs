@@ -65,7 +65,7 @@ order: 2
 ### 3.数据访问
 | 方法 | 返回值 | 描述 |
 |------|--------|------|
-| `getValue(const QString& key) const` | `QString` | 获取指定键的值（键格式如 "R1C1"） |
+| `getValue(const QString& key) const` | `QString` | 获取指定键的值（键格式如 "A1"） |
 | `tryGetValue(const QString& key) const` | `std::optional<QString>` | 尝试获取值，失败返回空 |
 | `setValue(const QString& key, const QString& value)` | `void` | 设置指定单元格的值 |
 | `contains(const QString& key) const` | `bool` | 检查单元格是否存在 |
@@ -99,6 +99,7 @@ order: 2
 |------|--------|------|
 | `getRowCount() const` | `int` | 获取最大行号 |
 | `getColumnCount() const` | `int` | 获取最大列号 |
+| `size() const` | `int` | 获取单元格数量 |
 | `getLastModified() const` | `QDateTime` | 获取文件的最后修改时间 |
 | `getFileSize() const` | `qint64` | 获取文件大小（字节） |
 | `getAllMetadata() const` | `QMap<QString, QVariant>` | 获取所有文件元数据 |
@@ -137,9 +138,11 @@ order: 2
 ### 10.类型判断与转换
 | 方法 | 返回值 | 描述 |
 |------|--------|------|
+| **判断** | - | - |
 | `isNumeric(const QString& value) const` | `bool` | 判断值是否为数值类型 |
 | `isDate(const QString& value, const QString& format = "yyyy-MM-dd") const` | `bool` | 判断值是否为指定格式的日期 |
 | `isBoolean(const QString& value) const` | `bool` | 判断值是否为布尔类型（true/false） |
+| **转换** | - | - |
 | `toDouble(const QString& value) const` | `std::optional<double>` | 将值转换为浮点数，失败返回空 |
 | `toDate(const QString& value, const QString& format = "yyyy-MM-dd") const` | `std::optional<QDate>` | 将值转换为日期，失败返回空 |
 | `toBoolean(const QString& value) const` | `std::optional<bool>` | 将值转换为布尔值，失败返回空 |
@@ -157,4 +160,3 @@ order: 2
 
 ## 3.源代码
 [源代码](https://github.com/huanhuan0812/qtcsv/blob/main/tests/test.cpp)
-[file content end]
