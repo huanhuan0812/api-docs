@@ -99,6 +99,9 @@ order: 2
 |------|--------|------|
 | `getRowCount() const` | `int` | 获取最大行号 |
 | `getColumnCount() const` | `int` | 获取最大列号 |
+| `getLastModified() const` | `QDateTime` | 获取文件的最后修改时间 |
+| `getFileSize() const` | `qint64` | 获取文件大小（字节） |
+| `getAllMetadata() const` | `QMap<QString, QVariant>` | 获取所有文件元数据 |
 
 ### 8.流式读取
 | 方法 | 返回值 | 描述 |
@@ -107,7 +110,41 @@ order: 2
 | `resetStream()` | `void` | 重置流读取位置 |
 | `hasNext()` | `bool` | 判断是否到达文件末尾 |
 
-### 9.信号
+### 9.行、列名称处理
+| 方法 | 返回值 | 描述 |
+|------|--------|------|
+| `enableHeaders(bool enable)` | `void` | 启用或禁用行/列表头 |
+| `headersEnabled() const` | `bool` | 检查是否启用了表头 |
+| **列标题**| - | - |
+| `setHeaderRow(int row=1)` | `void` | 设置作为列标题的行号 |
+| `setColumnHeader(int col, const QString& header)` | `void` | 设置指定列的标题 |
+| `setColumnHeaders(const QHash<int, QString>& headers)` | `void` | 批量设置列标题 |
+| `searchColumnHeader(const QString& header) const` | `QList<int>` | 搜索包含指定标题的列号 |
+| `getColumnHeader(int col) const` | `QString` | 获取指定列的标题 |
+| `getColumnHeaders() const` | `QList<QString>` | 获取所有列标题（按列号顺序） |
+| `getColumnHeaderLists() const` | `QStringList` | 获取所有列标题列表 |
+| `getHeaderRow() const` | `int` | 获取当前作为列标题的行号 |
+| **行标题**| - | - |
+| `setHeaderColumn(int col=1)` | `void` | 设置作为行标题的列号 |
+| `setRowHeader(int row, const QString& header)` | `void` | 设置指定行的标题 |
+| `setRowHeaders(const QHash<int, QString>& headers)` | `void` | 批量设置行标题 |
+| `searchRowHeader(const QString& header) const` | `QList<int>` | 搜索包含指定标题的行号 |
+| `getRowHeader(int row) const` | `QString` | 获取指定行的标题 |
+| `getRowHeaders() const` | `QList<QString>` | 获取所有行标题（按行号顺序） |
+| `getRowHeaderLists() const` | `QStringList` | 获取所有行标题列表 |
+| `getHeaderCol() const` | `int` | 获取当前作为行标题的列号 |
+
+### 10.类型判断与转换
+| 方法 | 返回值 | 描述 |
+|------|--------|------|
+| `isNumeric(const QString& value) const` | `bool` | 判断值是否为数值类型 |
+| `isDate(const QString& value, const QString& format = "yyyy-MM-dd") const` | `bool` | 判断值是否为指定格式的日期 |
+| `isBoolean(const QString& value) const` | `bool` | 判断值是否为布尔类型（true/false） |
+| `toDouble(const QString& value) const` | `std::optional<double>` | 将值转换为浮点数，失败返回空 |
+| `toDate(const QString& value, const QString& format = "yyyy-MM-dd") const` | `std::optional<QDate>` | 将值转换为日期，失败返回空 |
+| `toBoolean(const QString& value) const` | `std::optional<bool>` | 将值转换为布尔值，失败返回空 |
+
+### 11.信号
 | 信号 | 参数 | 描述 |
 |------|------|------|
 | `dataChanged` | `const QString& key, const QString& oldValue, const QString& newValue` | 当单元格数据发生变化时发出，包含键、旧值和新值 |
@@ -120,3 +157,4 @@ order: 2
 
 ## 3.源代码
 [源代码](https://github.com/huanhuan0812/qtcsv/blob/main/tests/test.cpp)
+[file content end]
