@@ -6,3 +6,6 @@ title: "文档目录"
 
 - #### qt csv
   - [文档](./qtcsv/introduction)
+
+- #### ClassIsland IPC 桥接插件
+  - [文档](./ClassIslandIPCBridge/using.md)
