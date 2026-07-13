@@ -319,4 +319,4 @@ std::cout << xml << std::endl;
 - `DocumentAllocator` 不是线程安全的
   
 ## 示例代码
-[示例](/example/litexml)
+[示例](https://huanhuan0812.github.io/api-docs/example/litexml)
