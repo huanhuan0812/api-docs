@@ -317,3 +317,6 @@ std::cout << xml << std::endl;
 - `DocumentNode` 及其子节点**不是**线程安全的
 - `XMLParser` 和 `XMLSerializer` 的实例可以安全地在不同线程中使用，但不应共享
 - `DocumentAllocator` 不是线程安全的
+  
+## 示例代码
+[示例](/example/litexml)
