@@ -1,2 +1,2 @@
-[CMakeLists.txt](./CMakeLists.txt)
-main.cpp](./main.cpp
+[CMakeLists.txt](./litexml/CMakeLists.txt)
+[main.cpp](./litexml/main.cpp)
